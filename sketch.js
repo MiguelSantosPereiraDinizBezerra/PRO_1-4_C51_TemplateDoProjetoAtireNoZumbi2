@@ -7,7 +7,7 @@ var heart1Img, heart2Img, heart3Img;
 
 var zombieGroup;
 
-
+var lifes = 3;
 
 function preload(){
   
@@ -66,6 +66,21 @@ player = createSprite(displayWidth-1150, displayHeight-300, 50, 50);
 function draw() {
   background(0); 
 
+  if(lifes === 2){
+    heart2.visible = true;
+    heart3.visible = false;
+  }
+  if(lifes === 1){
+    heart1.visible = true;
+    heart2.visible = false;
+    heart3.visible = false;
+  }
+  if(lifes <= 0){
+    heart1.visible = false;
+    heart2.visible = false;
+    heart3.visible = false;
+    player.destroy();
+  }
   //mover o jogador para cima e para baixo e tornar o jogo compatível com dispositivos móveis usando touches (toques)
 if(keyDown("UP_ARROW")||touches.length>0){
   player.y = player.y-30
@@ -96,7 +111,8 @@ if(zombieGroup.isTouching(player)){
  for(var i=0;i<zombieGroup.length;i++){     
       
   if(zombieGroup[i].isTouching(player)){
-       zombieGroup[i].bounceoff()
+       zombieGroup[i].destroy()
+       lifes -= 1
        } 
  }
 }
@@ -105,6 +121,9 @@ if(zombieGroup.isTouching(player)){
 enemy();
 
 drawSprites();
+textSize(20)
+fill("red")
+text("vidas: "+lifes,displayWidth-200,height/2-220)
 }
 
 
